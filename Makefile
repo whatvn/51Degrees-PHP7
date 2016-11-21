@@ -5,7 +5,7 @@ CPP_FLAGS       = -Wall -c -I. -O2 -std=c++11
 
 PREFIX                  = /usr
 #Edit these lines to correspond with your own directories
-LIBRARY_DIR             = $(shell /abserver/php-7.0.8/bin/php-config --extension-dir)
+LIBRARY_DIR             = $(shell php-config --extension-dir)
 PHP_CONFIG_DIR  = /etc/php5/cli/conf.d
 
 LD              = g++
