@@ -8,8 +8,6 @@
 
 class FiftyOneDegreesPatternV3 : public Php::Base {
 private:
-    Php::Value _cProvider;
-    Provider* _provider;
 
 public:
     static Php::Value provider_get() {
@@ -23,7 +21,6 @@ public:
     FiftyOneDegreesPatternV3() {
     }
     virtual ~FiftyOneDegreesPatternV3() {
-        delete _cProvider;
     }
 };
 
