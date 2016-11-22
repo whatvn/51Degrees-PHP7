@@ -50,69 +50,68 @@ using namespace std;
  * can support.
  */
 class Provider {
+public:
+    Provider(const string &fileName);
+    Provider(const string &fileName, const string &propertyString);
+    Provider(const string &fileName, vector<string> &propertiesArray);
 
-	public:
-		Provider(const string &fileName);
-		Provider(const string &fileName, const string &propertyString);
-		Provider(const string &fileName, vector<string> &propertiesArray);
+    virtual ~Provider();
 
-		virtual ~Provider();
+    vector<string> getHttpHeaders();
+    vector<string> getAvailableProperties();
+    string getDataSetName();
+    string getDataSetFormat();
+    string getDataSetPublishedDate();
+    string getDataSetNextUpdateDate();
+    int getDataSetSignatureCount();
+    int getDataSetDeviceCombinations();
 
-		vector<string> getHttpHeaders();
-		vector<string> getAvailableProperties();
-		string getDataSetName();
-		string getDataSetFormat();
-		string getDataSetPublishedDate();
-		string getDataSetNextUpdateDate();
-		int getDataSetSignatureCount();
-		int getDataSetDeviceCombinations();
+    Match* getMatch(const char *userAgent);
+    Match* getMatch(const string &userAgent);
+    Match* getMatch(const map<string, string> &headers);
 
-        Match* getMatch(const char *userAgent);
-        Match* getMatch(const string &userAgent);
-        Match* getMatch(const map<string, string> &headers);
+    map<string, vector<string> >& getMatchMap(const char *userAgent);
+    map<string, vector<string> >& getMatchMap(const string &userAgent);
+    map<string, vector<string> >& getMatchMap(
+            const map<string, string> &headers);
 
-        map<string, vector<string> >& getMatchMap(const char *userAgent);
-		map<string, vector<string> >& getMatchMap(const string &userAgent);
-		map<string, vector<string> >& getMatchMap(
-			const map<string, string> &headers);
+    string getMatchJson(const char *userAgent);
+    string getMatchJson(const string &userAgent);
+    string getMatchJson(const map<string, string> &headers);
 
-        string getMatchJson(const char *userAgent);
-        string getMatchJson(const string &userAgent);
-        string getMatchJson(const map<string, string> &headers);
+    void reloadFromFile();
+    void reloadFromMemory(const char *source, int length);
+    void reloadFromMemory(const string &source, int length);
 
-		void reloadFromFile();
-		void reloadFromMemory(const char *source, int length);
-		void reloadFromMemory(const string &source, int length);
+    Provider(const string &fileName, const string &propertyString,
+            bool validate);
 
-		Provider(const string &fileName, const string &propertyString,
-			bool validate);
+protected:
 
-	protected:
+private:
+    vector<string> httpHeaders;
+    vector<string> availableProperties;
 
-	private:
-		vector<string> httpHeaders;
-		vector<string> availableProperties;
+    void init(const string &fileName, const string &propertyString);
+    void init(const string &fileName, vector<string> &propertyString);
+    void init(const string &fileName);
+    void initHttpHeaders();
+    void initAvailableproperties();
+    void initException(fiftyoneDegreesDataSetInitStatus initStatus,
+            const string &fileName);
+    void initComplete(fiftyoneDegreesDataSetInitStatus initStatus,
+            const string &fileName);
+    void buildArray(fiftyoneDegreesDeviceOffsets *offsets,
+            map<string, vector<string> > *result);
+    void buildArray(int offset, map<string, vector<string> > *result);
+    fiftyoneDegreesDeviceOffsets* matchForHttpHeaders(
+            const map<string, string> *headers);
+    void initMatch(Match *match);
 
-		void init(const string &fileName, const string &propertyString);
-		void init(const string &fileName, vector<string> &propertyString);
-		void init(const string &fileName);
-		void initHttpHeaders();
-		void initAvailableproperties();
-		void initException(fiftyoneDegreesDataSetInitStatus initStatus,
-			const string &fileName);
-		void initComplete(fiftyoneDegreesDataSetInitStatus initStatus,
-			const string &fileName);
-		void buildArray(fiftyoneDegreesDeviceOffsets *offsets,
-			map<string, vector<string> > *result);
-		void buildArray(int offset, map<string, vector<string> > *result);
-		fiftyoneDegreesDeviceOffsets* matchForHttpHeaders(
-			const map<string, string> *headers);
-		void initMatch(Match *match);
+    int64_t initWithValidate(const string &fileName,
+            const string &properties);
 
-		int64_t initWithValidate(const string &fileName,
-			const string &properties);
-
-		fiftyoneDegreesProvider provider;
+    fiftyoneDegreesProvider provider;
 };
 
 #endif // FIFTYONEDEGREESPROVIDER_HPP
