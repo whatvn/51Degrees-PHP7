@@ -30,19 +30,17 @@ public:
 
     Php::Value getMatch(Php::Parameters &param) const {
         Php::Value cMatch;
-        cMatch = Php::Object("CMatch", new CMatch(getMatchJson(param)));
+        cMatch = Php::Object("CMatch", new CMatch((const char*) getMatchJson(param[0]).c_str()));
         return cMatch;
     }
-
-
 
 private:
 
     static CProvider* s_instance;
     Provider *provider;
 
-    string getMatchJson(Php::Parameters &param) const {
-        return this->provider->getMatchJson((const char*) param[0]);
+    string getMatchJson(Php::Value &v) const {
+        return this->provider->getMatchJson((const char*) v);
     }
 
     CProvider(std::string dataFile, std::string propertiesList, int cacheSize, int poolSize) {

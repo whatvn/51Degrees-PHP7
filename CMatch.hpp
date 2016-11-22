@@ -6,37 +6,47 @@
  *      */
 #include "deviceDetection/pattern/Match.hpp"
 #include "phpcpp.h"
-#include "json11/json11.hpp"
+#include "include/rapidjson/document.h"
 
 #pragma once
 
-using namespace json11;
+using namespace rapidjson;
 
 /**
  *  *  Class definition
  * have to inherit from class Php::Base
  *   */
 class CMatch : public Php::Base {
+    
 public:
 
-    CMatch(string mJson) {
-        string err;
-        this->json = Json::parse(mJson, err);
+     CMatch(const char* mJson) {
+         this->json.Parse(mJson);
     }
+    
 
-    virtual ~CMatch() = default;
+    virtual ~CMatch() {
+        this->json = 0;
+    }
     
     Php::Value getValue(Php::Parameters &param) const {
         if (isAllow(param[0])) {
-            return this->json[(const char*) param[0]].string_value();
+            return this->json[(const char*) param[0]].GetString();
         }
         return "";
     }
 
 
+    Php::Value getValue(Php::Value &v) const {
+        if (isAllow(v)) {
+            return this->json[(const char*) v].GetString();
+        }
+        return "";
+    }
+    
 private:
-    Json json;
-    string propertyList = Php::ini_get("FiftyOneDegreesPatternV3.property_list");
+    Document json;
+    const string propertyList = Php::ini_get("FiftyOneDegreesPatternV3.property_list");
 
     bool isAllow(const char* property) const {
         if (propertyList.find(property) != std::string::npos) {
