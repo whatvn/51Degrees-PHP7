@@ -1,3 +1,9 @@
+# Absolute
+
+***This extension is absolute*** because php-cpp introduces great memory leak, newest php-cpp version is not fully ported to php7, it contains many bugs. 
+please use my new extension: https://github.com/whatvn/php7-51degrees
+
+
 # 51Degrees-PHP7
 
 The origin php extension provided by 51Degrees foundation was built on top of swig, which is currently does not support PHP7.
@@ -66,7 +72,7 @@ So in case anyone use php with zts enabled, please do not try this extension, an
 # CREDITs:
 
 - 51 Degrees libary: https://github.com/51Degrees/Device-Detection
-- json11: https://github.com/dropbox/json11
+- rapidJson https://github.com/miloyip/rapidjson 
 - php-cpp: http://www.php-cpp.com/ 
 
 
